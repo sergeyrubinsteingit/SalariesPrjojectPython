@@ -1,5 +1,8 @@
 # TechSalariesComparision
 Web test. Enters site pages, gets data and calculates an average salary for each position. Then stores data in Json file for further representation in HTML file.
+
+Test starts in module defaultModule.py.
+
 1.  Folder App contains scripts of this test program
 2.  Folder Drivers is web driver's storage (for Selenium).
 3.  Folder htmlReport should contain an screen display of the test results. ** This part of the test is in process of scripting now. **
