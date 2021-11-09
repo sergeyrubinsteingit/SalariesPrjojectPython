@@ -1,48 +1,34 @@
 # -*- coding: utf-8 -*-
+
+##############################################
+# Runs through the table tested. Keeps lowest
+# and highest salary's value in two separate
+# lists. Counts an average value for each case
+# and stores in the third list. Afterwards arranges
+# all three lists in combined list. Then calls
+# a module which writes the result to json
+# [jsonWriter.write_to_json].
+##############################################
+
 import gc as garbg_coll_
 import re
 import sys
 import threading
 import time
 import traceback
-
-# from certifi.__main__ import args
-
-# import app.internSpeedChck
-
-# from bidi.algorithm import get_display
-# import matplotlib.pyplot as plt
-# import arabic_reshaper
-# import rtl
-# import django
 from selenium.webdriver.remote.webelement import WebElement
-
-from app import browserStatus, clickOnLink, jsonWriter, allPositionsList, internSpeedChck
+from app import clickOnLink, jsonWriter, allPositionsList, internSpeedChck
 from app.allPositionsList import position_list, position_flg_
+from defaultModule import default_wbd_ as _default_wbd_
 
-# try:
-#     from app.openLinksAsTabs import links_count_
-#     time.sleep(5)
-# except ImportError:
-#     try:
-#         from openLinksAsTabs import links_count_
-#         time.sleep(5)
-#     except ImportError:
-#         from .openLinksAsTabs import links_count_
-#         time.sleep(5)
-#     finally:
-#         print('Failed to find a module [ openLinksAsTabs ]. Yours Analyzer...')
-#         browserStatus.BrowserStatus.wbd_.quit()
-#         sys.exit(-1)
 tbl_all_positions_: dict = {}
 all_tbls_log_: dict = {}
-web_driver_ = browserStatus.BrowserStatus.wbd_
+web_driver_ = _default_wbd_
 
 
 class AnalyzeTblCont:
     def __init__(self):
-        # self._links_count_ = links_count_
-        # self.all_tbls_log_ = None
+
         self.cell_per_row_: int
         self.position_nm_: str = ''
         self.position_flg_: bool
@@ -84,20 +70,7 @@ class AnalyzeTblCont:
         # self.self.int_spd_count: int
 
     def analyze_tbl_cont(self, _links_count_):
-        # global self.all_tbls_log_
         print('{{{{{{{{{{{{{  Analyze Tbl Content/analyze_tbl_cont function begins  }}}}}}}}}}}}}')
-
-        # def analyze_tbl_cont(_links_count_, passd_tm_, strt_time_, curr_tm_, self.intrn_speed_):
-
-        # while passd_tm_ < 60:  # Analizing begins here
-        #     self.intrn_speed_ = self.intrn_speed_
-        #     passd_tm_: float = curr_tm_ - strt_time_
-        #     strt_time_ = strt_time_
-        # else:  # Ends analizing block. While conditions begin
-        #     self.intrn_speed_ = internSpeedChck.intr_spd_
-        #     curr_tm_: float = time.time()
-        #     passd_tm_ = 0
-        # all_tbls_log_: dict
 
         internSpeedChck.internet_chk_speed_()
         int_spd_count = 0
@@ -116,10 +89,9 @@ class AnalyzeTblCont:
                 self.conditions_.notify()
                 self.conditions_.release()
                 return self.intrn_speed_
-                # self.int_spd_count = 0
-                # call_intr_speed(self.int_spd_count)
 
         self.conditions_ = threading.Condition()
+        # noinspection PyTypeChecker
         self.task_ = threading.Thread(target=call_intr_speed(int_spd_count))
         self.task_.start()
 
@@ -131,7 +103,6 @@ class AnalyzeTblCont:
         time.sleep(1)
 
         nmb_of_rows_ = get_tbl_.find_elements_by_tag_name('tr').__len__()
-        # nmb_of_cells_ = get_tbl_.find_elements_by_tag_name('td').__len__()
         cell_per_row_ = 0
 
         for cell_with_txt_ in range(0, get_tbl_.find_elements_by_tag_name('tr')[1].find_elements_by_tag_name(
@@ -166,16 +137,6 @@ class AnalyzeTblCont:
         for row_nmb_ in range(1, nmb_of_rows_):
             self.position_nm_ = get_tbl_.find_elements_by_tag_name('tr')[row_nmb_].find_elements_by_tag_name('td')[
                 0].text
-            time.sleep(self.intrn_speed_)
-            # for char_ in position_nm_:
-            #     if not ascii(char_):
-            #         print(char_)
-            #         # get_display(char_[::-1])
-            # position_nm_ = get_display(arabic_reshaper.connects_with_letter_after(position_nm_))
-            # position_nm_ = get_display(position_nm_[::-1])
-            # time.sleep(0.1)
-            # position_nm_ = get_display(position_nm_[::1])
-            # position_nm_ = rtl.Loader.load_rtl_template(position_nm_,rtl)
             time.sleep(self.intrn_speed_)
             print('<<<<<<<< Var self.intrn_speed_ = ' + str(self.intrn_speed_) + ' Msg 2; from AnalizeContent >>>>>>>>')
             position_list(self.position_nm_, position_flg_)
@@ -244,14 +205,6 @@ class AnalyzeTblCont:
                     time.sleep(0.05)
                     self.tbl_row_position_ = {}
 
-                    # self.salaries_top_ = []
-                    # self.salaries_bott_ = []
-                    # self.salaries_average_ = []
-                    #
-                    # self.slr_highest_ = []  # arranged for Json
-                    # self.slr_lowest_ = []  # arranged for Json
-                    # self.slr_avr_ = []  # arranged for Json
-
             if row_nmb_ == nmb_of_rows_ - 1:
                 all_tables_logging(self.table_title_, self.position_nm_,
                                    self.tbl_all_positions_)  # adds all tables' data to united dictionary; sends the dict to be written to Json
@@ -260,31 +213,12 @@ class AnalyzeTblCont:
                     self.intrn_speed_) + ' Msg 7; from AnalizeContent >>>>>>>>')
                 self.tbl_all_positions_ = {}
 
-        # self.tab_cnt += 1
-        # print('<<<<<<< analyzeTableContent: self.tab_cnt = ' + str(self.tab_cnt) + ' >>>>>>>')
         print('<<<<<<< analyzeTableContent: len(web_driver_.window_handles) = ' + str(
             len(web_driver_.window_handles)) + ' >>>>>>>')
         print('<<<<<<< analyzeTableContent: len(clickOnLink.all_links_) = ' + str(
             len(clickOnLink.all_links_)) + ' >>>>>>>')
         time.sleep(1)
-        #
-        # if len(clickOnLink.all_links_) + 1 == len(web_driver_.window_handles):
-        #     print('All tables log:\n' + str(self.all_tbls_log_))
-        #     jsonWriter.write_to_json(self.all_tbls_log_)
-        #     time.sleep(1)
-        #     try:
-        #         allPositionsList.position_flg_ = True
-        #         position_list(self.position_nm_, position_flg_)
-        #     except TypeError:
-        #         print('From Analize... print position list:')
-        #         traceback.print_exc()
-        #         web_driver_.quit()
-
         return self.tbl_all_positions_
-
-
-# call_clss_ = AnalyzeTblCont()
-# call_clss_.analyze_tbl_cont(links_count_)
 
 
 if __name__ == '__main__':
@@ -293,9 +227,6 @@ if __name__ == '__main__':
 
 def all_tables_logging(_table_title_, _position_nm_, _tbl_all_positions_):
     all_tbls_log_[str(_table_title_)] = _tbl_all_positions_  # All the fields with corresponding positions
-    # print('\n((((^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nanalizeTbContent: '
-    #       'self.all_tbls_log_ processed\n' \
-    #       + str(self.all_tbls_log_) + '))))\n')
 
     if len(clickOnLink.all_links_) + 1 == len(web_driver_.window_handles):
         print('All tables log:\n' + str(all_tbls_log_))
@@ -307,7 +238,8 @@ def all_tables_logging(_table_title_, _position_nm_, _tbl_all_positions_):
         except TypeError:
             print('From Analize... print position list:')
             traceback.print_exc()
-            web_driver_.quit()
+            # web_driver_.quit()
+        web_driver_.quit()
 
-
+# Here runs a garbage collector
 garbg_coll_.enable()

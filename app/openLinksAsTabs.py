@@ -1,18 +1,12 @@
-import inspect
-import os
-import sys
 import time
 import traceback
-
 import requests
 import urllib3
-from certifi.__main__ import args
 from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchElementException
 from selenium.webdriver.common.by import By
-#   from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 
-from app import browserStatus
+from app import openSelectedBrowser
 from selenium.webdriver.support import expected_conditions as exp_cond_
 
 wbd_count_: int = 0
@@ -21,18 +15,18 @@ open_link_count_: int = 0
 msg_ln_: str = ''
 tbl_all_positions_: dict = {}
 
+from defaultModule import default_wbd_ as _default_wbd_
+
 try:
-    web_driver_ = browserStatus.BrowserStatus.wbd_
+    web_driver_ = _default_wbd_
 except ImportError:
     wbd_count_ += 1
     time.sleep(1)
-    web_driver_ = browserStatus.BrowserStatus.wbd_
+    web_driver_ = _default_wbd_
     if wbd_count_ == 10:
         print('Failed on [getSalaryInfo] \n^^^^^^^^^^^^^^^^^^^^^^^^')
         web_driver_.quit()
         SystemExit(0)
-
-# links_count_: int
 
 
 def open_link(links_count_, current_link_, open_link_count_=0, self=None):

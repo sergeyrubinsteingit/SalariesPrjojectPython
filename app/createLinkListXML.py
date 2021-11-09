@@ -1,10 +1,15 @@
+##############################################
+# Stores page link names into XML file list
+# for further usage i [clickOnLink.visit_links()]
+# to open links.
+##############################################
 import os
 import threading
 import time
 import xml.etree.cElementTree as elemTree_
 from pathlib import Path
 from app import clickOnLink
-from app import browserStatus
+from defaultModule import default_wbd_ as _default_wbd_
 
 event_: threading.Event = threading.Event()
 set_thread_ = threading.Thread()
@@ -12,7 +17,7 @@ set_thread_.start()
 
 path_to_dir_ = Path('../linksListFile')
 path_to_file_ = Path('../linksListFile/LinksList.xml')
-web_driver = browserStatus.BrowserStatus.wbd_
+web_driver = _default_wbd_
 
 flg_click_: bool = False
 
@@ -32,17 +37,16 @@ def prepare_file():
         # Creates a file unless it already exists
         path_to_file_.touch(exist_ok=True)
         event_.wait(1)
-    #    waitPopUpBox.WaitBox()
     except IOError as ioe:
-        print(path_to_file_ + " DOESN'T EXIST IN SYSTEM")
+        print(str(path_to_file_) + " DOESN'T EXIST IN SYSTEM")
         web_driver.quit()
         print(ioe)
 
 
 def create_xml(link_list_):
-    prepare_file()
+    prepare_file() # creates a new XML file
     time.sleep(1)
-    while not event_.isSet():
+    while not event_.isSet(): # Awaits till the [prepare_file()] function creates a new XML file
         time.sleep(1)
         print("create_xml begins")
         count3 = 0

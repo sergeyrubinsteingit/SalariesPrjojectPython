@@ -1,39 +1,30 @@
 # -*- coding: Windows-1255 -*-
 
+#####################################
+# This module writes a data
+# gathered in the tested site (tables' data)
+# into json.
+#####################################
+from defaultModule import default_wbd_ as _default_wbd_
 import gc as garbg_coll_
-# import codecs
 import json
-# import re
 import os
-import shutil
 import sys
 import time
 import io
-from _ast import Raise
-
 
 count_write_js_: int = 0
-#   count_read_js_: int = 0
-
 encoding_obj_: str = ''
-
 logs_collector_: dict = {}
-
-js_dir_path_ = 'C:/Users/user/PycharmProjects/SalariesPrjPython/json_files/'
-# js_dir_path_ = js_dir_path_.replace('\\', os.path.sep)
+js_dir_path_ = '../SalariesPrjPython/json_files/'
 
 
 def write_to_json(all_tbls_cont_):
-    from app import browserStatus
-
     global encoding_obj_, path_to_json_file_
-    #
-    # json_dir_files_ = [os.path.join(path_to_json_dir_, old_fls_) for old_fls_ in os.listdir(path_to_json_dir_)]
-    # [shutil.rmtree(old_fls_) if os.path.isdir(old_fls_) and not os.path.islink(old_fls_) else os.remove(old_fls_) for old_fls_ in json_dir_files_]
 
     print('all_tbls_cont_ are ' + str(all_tbls_cont_) + '\n')
-    enc_lst_ = ['iso-8859-8', 'cp1252', 'utf-8', 'Windows-1255']
 
+    enc_lst_ = ['iso-8859-8', 'cp1252', 'utf-8', 'Windows-1255']
     print('write_to_json: enc_lst_ is ' + str(enc_lst_))
 
     for enc_from_lst_ in (enc_lst_):
@@ -64,7 +55,8 @@ def write_to_json(all_tbls_cont_):
                     continue
             else:
                 print('((((( File ' + path_to_json_file_ + ' was not found )))))')
-                browserStatus.BrowserStatus.wbd_.quit()
+    _default_wbd_.quit()
+    sys.exit()
 
 
 def read_jsons(work_enc_, _path_to_json_file_):
@@ -82,6 +74,7 @@ def read_jsons(work_enc_, _path_to_json_file_):
         except FileNotFoundError:
             time.sleep(0.1)
             print('{{{{read_jsons(): File ' + str(open_fl_) + ' not found}}}}')
+        time.sleep(2)
 
 
 garbg_coll_.enable()
