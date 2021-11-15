@@ -1,0 +1,11 @@
+15/11/2021 14:14
+
+Pinging www.techjob.co.il [67.207.77.59] with 32 bytes of data:
+Reply from 67.207.77.59: bytes=32 time=87ms TTL=52
+Reply from 67.207.77.59: bytes=32 time=96ms TTL=52
+
+Ping statistics for 67.207.77.59:
+    Packets: Sent = 2, Received = 2, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 87ms, Maximum = 96ms, Average = 91ms
+Control-C
