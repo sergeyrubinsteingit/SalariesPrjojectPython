@@ -6,6 +6,10 @@ def write_link_list():
     from defaultModule import default_wbd_ as _default_wbd_
     time.sleep(2)
     print('\nBrowser and Links \n####################')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+          'write_link_list():\n'
+          'Lists links on the front page to visit and test.\n\n'
+          '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
     web_driver_ = _default_wbd_
 
     # On a front page of the site finds a list of pages
@@ -21,3 +25,6 @@ def write_link_list():
         count_ += 1
     time.sleep(0.5)
     createLinkListXML.create_xml(li_tag_list_)
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+          'Calls [ create_xml ] function.\n\n'
+          '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')

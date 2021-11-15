@@ -14,6 +14,14 @@ links_count_: int = 0
 
 
 def visit_links():
+    from app import display_Console
+    display_Console.print_console()
+    print(
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+        'From [ clickOnLink.py ] :\n'
+        '[ visit_links() ] begins.\n\n'
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
+    # from app.display_Console import start_printing
     clear_old_jsons()
     global links_count_
     try:
@@ -22,19 +30,41 @@ def visit_links():
         get_root = get_tree.getroot()
         for links_ in get_root:
             all_links_.extend(links_)
-            print('clickOnLink: all_links_ length is ' + str(all_links_.__len__()) + '\n')
+            print(
+                '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+                'From [ clickOnLink.py ] :\n'
+                'Total of links: ' + str(all_links_.__len__()) + '.\n\n'
+                '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
+
+            # start_printing()
             for link_ in links_:
                 this_link_: str = link_.text
-                print('clickOnLinks: links_count_ = ' + str(links_count_) + '\n****************************')
+                print(
+                    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+                    'From [ clickOnLink.py ] :\n'
+                    'Link nmb. ' + str(links_count_) + ' is visited.\n\n'
+                    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
                 open_link(links_count_, this_link_)
                 links_count_ += 1
     except FileExistsError:
-        print('FileExistsError = ' + str(FileExistsError))
-    print('clickOnLinks, visit_links(): links nmb is ' + str(all_links_.__len__()) + '\n')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ clickOnLink.py ] :\n'
+            'FileExistsError = ' + str(FileExistsError) + '.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
+    print(
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+        'From [ clickOnLink.py ] :\n'
+        'Total of links: ' + str(all_links_.__len__()) + '.\n\n'
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
 
 
 def clear_old_jsons():
-    print('--------------- clear_old_jsons() -------------------')
+    print(
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+        'From [ clickOnLink.py ] :\n'
+        'Deleting jsons from the former test.\n\n'
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
     # clear directory for new files
     try:
         path_to_dir_ = Path('../json_files')
@@ -43,5 +73,9 @@ def clear_old_jsons():
         os.mkdir(path_to_dir_)
         time.sleep(0.1)
     except FileNotFoundError:
-        print('--------------- No json files to clear up -------------------')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ clickOnLink.py ] :\n'
+            'No json files to clear up.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
         pass

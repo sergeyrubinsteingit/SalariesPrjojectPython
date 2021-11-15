@@ -15,6 +15,7 @@ def call_combo_box(_brows_names_):
     combo_win_.geometry('250x200')
     combo_win_.configure(bg='orange')
     combo_win_.eval('tk::PlaceWindow . center')  # Centers a combo in the os window
+    combo_win_.attributes('-topmost', True)
 
     # labels the window
     get_ttk_.Label(combo_win_, text="Please select a browser:",

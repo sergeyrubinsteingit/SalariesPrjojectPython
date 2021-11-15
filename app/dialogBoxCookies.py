@@ -20,17 +20,20 @@ msg_root_: Tk
 
 def keep_cookies():
     msg_root_.destroy()
-    print("\nSleep quite, your cookies stay with you\n+++++++++++++++++++++++++++++++++++++++++++++++++++")
-    wait_box_and_list()
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+          'Sleep quite, your cookies stay with you.\n\n'
+          '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
+    wait_box_and_list() # Writes a list of links to visit in process of testing
 
 
 def delete_cookies():
     msg_root_.destroy()
     _default_wbd_.delete_all_cookies()
     time.sleep(0.5)
-    wait_box_and_list()
-
-    print("\nThe cookies had been deleted\n+++++++++++++++++++++++++++++++++++++++++++++++++++")
+    wait_box_and_list() # Writes a list of links to visit in process of testing
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+          'The cookies had been deleted.\n\n'
+          '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
 
 
 def wait_box_and_list():
@@ -39,6 +42,12 @@ def wait_box_and_list():
 
 
 def dia_box_():
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+          'Hi from Cookies dialog.\n'
+          'The tester is to choose whether delete or keep cookies in browser.\n'
+          'It is recommended to delete them, because cookies sometimes\n'
+          'intervene with a normal run of test.\n\n'
+          '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
     global msg_wn_, msg_root_
     wn_wdt: int = 400
     wn_hgt: int = 200
@@ -51,7 +60,8 @@ def dia_box_():
     msg_root_.transient()
     msg_root_.geometry('400x200')
     msg_wn_.configure(bg='#120f6b')
-    msg_root_.focus()
+    # msg_root_.focus()
+    msg_root_.attributes('-topmost', True)
     msg_root_.update_idletasks()
     msg_root_.withdraw()
 

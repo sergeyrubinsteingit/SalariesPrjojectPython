@@ -4,6 +4,7 @@
 # to open links.
 ##############################################
 import os
+import sys
 import threading
 import time
 import xml.etree.cElementTree as elemTree_
@@ -38,7 +39,11 @@ def prepare_file():
         path_to_file_.touch(exist_ok=True)
         event_.wait(1)
     except IOError as ioe:
-        print(str(path_to_file_) + " DOESN'T EXIST IN SYSTEM")
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ createLinkListXML ] :\n'
+            'FILE [ ' + str(path_to_file_) + ' ] DOESN\'T EXIST IN SYSTEM.\n\n' 
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
         web_driver.quit()
         print(ioe)
 
@@ -48,22 +53,43 @@ def create_xml(link_list_):
     time.sleep(1)
     while not event_.isSet(): # Awaits till the [prepare_file()] function creates a new XML file
         time.sleep(1)
-        print("create_xml begins")
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ createLinkListXML ] :\n'
+            'Now [ create_xml ] is running.\n\n' 
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
         count3 = 0
         try:
             if os.path.exists('../linksListFile/LinksList.xml'):
-                print("OK, path exists")
+                print(
+                    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+                    'From [ createLinkListXML ] :\n'
+                    'OK, path to XML exists.\n\n'
+                    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
                 event_.set()
+                break
             else:
                 count3 += 1
                 prepare_file()
                 if count3 < 3 and os.path.exists('../linksListFile/LinksList.xml'):
-                    print("OK, path exists, third attempt")
+                    print(
+                        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+                        'From [ createLinkListXML ] :\n'
+                        'OK, path to XML was found on third attempt.\n\n'
+                        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
                     event_.set()
+                    break
                 if count3 == 3:
                     print("Creating file failed")
+                    print(
+                        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+                        'From [ createLinkListXML ] :\n'
+                        'Sorry, creating of the XML file failed.\n'
+                        'Test cannot be continued and shut down.\n\n'
+                        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
                     web_driver.quit()
-                    break
+                    sys.exit(-1)
+
         except KeyboardInterrupt:
             event_.set()
             break
@@ -77,9 +103,16 @@ def create_xml(link_list_):
         count2 += 1
     tag_tree_ = elemTree_.ElementTree(settings_tag_)
     tag_tree_.write(path_to_file_, encoding="UTF-8", xml_declaration=True)
-    print("Create XML is done")
-    print("Here is a list of the links:\n " + str(link_list_))
+    print(
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+        'From [ createLinkListXML ] :\n'
+        'Create XML is done.\n'
+        'Here is a list of the links: \n'  + str(link_list_) + '\n\n'
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
     time.sleep(0.5)
     clickOnLink.visit_links()
+    import app.display_Console
+    app.display_Console.print_console() # Sends console info to the Text box to keep tester in touch with the process.
+
 
 

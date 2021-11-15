@@ -37,10 +37,6 @@ class AnalyzeTblCont:
         self.tbl_row_position_: dict = {}  # arranged for Json
         self.tbl_position_collection_: dict = {}  # arranged for Json
         self.tbl_all_positions_: dict = {}  # arranged for Json
-        # self.all_tbls_log_: dict  # arranged for Json
-        # self.all_tbls_log_ = None  # arranged for Json
-
-        # self.tab_cnt: int
 
         # A variable which value should be changed with changes in Internet speed:
         self.intrn_speed_ = internSpeedChck.intr_spd_
@@ -67,40 +63,54 @@ class AnalyzeTblCont:
         self.task_ = threading.Thread(target=None)
         self.task_.start()
 
-        # self.self.int_spd_count: int
-
-    def analyze_tbl_cont(self, _links_count_):
-        print('{{{{{{{{{{{{{  Analyze Tbl Content/analyze_tbl_cont function begins  }}}}}}}}}}}}}')
-
-        internSpeedChck.internet_chk_speed_()
+    def analyze_tbl_cont(self, _links_count_, _ispeed=None):
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ analyzeTableContent.py ] :\n'
+            'Now [ analyze_tbl_cont ] function begins.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
+        ##########################################################################
+        # Below fires a function to check Internet speed of by sending pings
+        # and taking maximal speed as a basic value for setting timeouts in test
+        internSpeedChck.internet_chk_speed_(_ispeed)
         int_spd_count = 0
 
         def call_intr_speed(_int_spd_count):
-            while self.int_spd_count < 20:
+            while self.int_spd_count < 5:
                 self.int_spd_count += 1
                 print('call_intr_speed(self.int_spd_count) : self.int_spd_count = ' + str(self.int_spd_count))
+                print(
+                    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+                    'From [ analyzeTableContent.py ] :\n'
+                    'Checking thread: check ' + str(self.int_spd_count) + '\'s done.\n\n'
+                    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
                 time.sleep(self.intrn_speed_)
                 self.conditions_.acquire()
             else:
-                print('#:>D ' * 100)
+                print('#:>D ' * 10)
                 internSpeedChck.internet_chk_speed_()  # Call a function to get a current Internet speed
                 self.intrn_speed_ = internSpeedChck.intr_spd_
                 time.sleep(self.intrn_speed_)
                 self.conditions_.notify()
                 self.conditions_.release()
                 return self.intrn_speed_
+        ##########################################################################
 
         self.conditions_ = threading.Condition()
+        # //////////////// Escape from PyCharm checker /////////////
         # noinspection PyTypeChecker
         self.task_ = threading.Thread(target=call_intr_speed(int_spd_count))
         self.task_.start()
 
         allPositionsList.position_flg_ = False
-
-        print('_links_count_ = ' + str(_links_count_))
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ analyzeTableContent.py ] :\n'
+            'Now a link nmb' + str(_links_count_) + ' is open.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
 
         get_tbl_ = web_driver_.find_element_by_tag_name('tbody')
-        time.sleep(1)
+        time.sleep(internSpeedChck.intr_spd_)
 
         nmb_of_rows_ = get_tbl_.find_elements_by_tag_name('tr').__len__()
         cell_per_row_ = 0
@@ -110,10 +120,22 @@ class AnalyzeTblCont:
             if get_tbl_.find_elements_by_tag_name('tr')[1].find_elements_by_tag_name('td')[cell_with_txt_].text != '':
                 cell_per_row_ += 1
         time.sleep(self.intrn_speed_)
-        print('<<<<<<<< Var self.intrn_speed_ = ' + str(self.intrn_speed_) + ' Msg 1; from AnalizeContent >>>>>>>>')
 
-        print('cell_per_row_ = ' + str(cell_per_row_) + '+-' * 70 + '\n')
-        print('\n(((((((((((((( clickOnLink.links_count_ = ' + str(_links_count_) + ' )))))))))))))\n')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ analyzeTableContent.py ] :\n'
+            'The Internet speed is: ' + str(self.intrn_speed_) + '.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ analyzeTableContent.py ] :\n'
+            'Number of cells in this row is: ' + str(cell_per_row_) + '.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ analyzeTableContent.py ] :\n'
+            'Now a link nmb' + str(_links_count_) + ' is open.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
 
         salaries_top_ = []
         regex_top_ = re.compile(r'\d+(?!.*-)')
@@ -130,18 +152,18 @@ class AnalyzeTblCont:
         slr_avr_ = []  # arranged for Json
 
         self.table_title_ = web_driver_.find_elements_by_class_name('SalaryTableTitle_salaryTableTitle__RQsQt')[0].text
-        print('\n' + '+-' * 70 + '\n')
-        print('The  TABLE\'\s title is: ' + self.table_title_)
-        print('\n' + '+-' * 70 + '\n')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ analyzeTableContent.py ] :\n'
+            'The current TABLE is: ' + self.table_title_ + ' .\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
 
         for row_nmb_ in range(1, nmb_of_rows_):
             self.position_nm_ = get_tbl_.find_elements_by_tag_name('tr')[row_nmb_].find_elements_by_tag_name('td')[
                 0].text
             time.sleep(self.intrn_speed_)
-            print('<<<<<<<< Var self.intrn_speed_ = ' + str(self.intrn_speed_) + ' Msg 2; from AnalizeContent >>>>>>>>')
             position_list(self.position_nm_, position_flg_)
             time.sleep(self.intrn_speed_)
-            print('<<<<<<<< Var self.intrn_speed_ = ' + str(self.intrn_speed_) + ' Msg 3; from AnalizeContent >>>>>>>>')
 
             # Gets header text for each column;
             # Replaces Hebrew with English;
@@ -175,12 +197,8 @@ class AnalyzeTblCont:
                 # Forms a dictionary - high salaries:
                 slr_highest_.append({key_dct_[cell_nmb_ - 1]: salaries_top_[cell_nmb_ - 1]})
                 time.sleep(self.intrn_speed_ / 2)
-                print('<<<<<<<< Var self.intrn_speed_ = ' + str(
-                    self.intrn_speed_) + ' Msg 4; from AnalizeContent >>>>>>>>')
                 slr_lowest_.append({key_dct_[cell_nmb_ - 1]: salaries_bott_[cell_nmb_ - 1]})
                 time.sleep(self.intrn_speed_)
-                print('<<<<<<<< Var self.intrn_speed_ = ' + str(
-                    self.intrn_speed_) + ' Msg 5; from AnalizeContent >>>>>>>>')
                 # Calculates an average salary and forms a corresponding dictionary:
                 if cell_nmb_ + 1 == cell_per_row_:
                     salaries_average_.clear()
@@ -197,9 +215,6 @@ class AnalyzeTblCont:
                         '[ Average ]'] = slr_avr_  # Here goes an AVERAGE salary for specified position
 
                     time.sleep(self.intrn_speed_)
-                    print('<<<<<<<< Var self.intrn_speed_ = ' + str(
-                        self.intrn_speed_) + ' Msg 6; from AnalizeContent >>>>>>>>')
-
                     self.tbl_all_positions_[
                         str(self.position_nm_)] = self.tbl_row_position_  # All positions for specified field
                     time.sleep(0.05)
@@ -209,14 +224,13 @@ class AnalyzeTblCont:
                 all_tables_logging(self.table_title_, self.position_nm_,
                                    self.tbl_all_positions_)  # adds all tables' data to united dictionary; sends the dict to be written to Json
                 time.sleep(self.intrn_speed_)
-                print('<<<<<<<< Var self.intrn_speed_ = ' + str(
-                    self.intrn_speed_) + ' Msg 7; from AnalizeContent >>>>>>>>')
                 self.tbl_all_positions_ = {}
-
-        print('<<<<<<< analyzeTableContent: len(web_driver_.window_handles) = ' + str(
-            len(web_driver_.window_handles)) + ' >>>>>>>')
-        print('<<<<<<< analyzeTableContent: len(clickOnLink.all_links_) = ' + str(
-            len(clickOnLink.all_links_)) + ' >>>>>>>')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ analyzeTableContent.py ] :\n'
+            'The number of TABS is: ' + str(len(web_driver_.window_handles)) + ' .\n'
+            'The number of current LINK is: ' + str(len(clickOnLink.all_links_)) + ' .\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
         time.sleep(1)
         return self.tbl_all_positions_
 
@@ -229,16 +243,25 @@ def all_tables_logging(_table_title_, _position_nm_, _tbl_all_positions_):
     all_tbls_log_[str(_table_title_)] = _tbl_all_positions_  # All the fields with corresponding positions
 
     if len(clickOnLink.all_links_) + 1 == len(web_driver_.window_handles):
-        print('All tables log:\n' + str(all_tbls_log_))
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ analyzeTableContent.py ] :\n'
+            'The number of TABS is: ' + str(len(web_driver_.window_handles)) + ' .\n'
+            'All tables log:\n' + str(all_tbls_log_) + ' .\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
+        # A function to write into Json
         jsonWriter.write_to_json(all_tbls_log_)
         time.sleep(1)
         try:
             allPositionsList.position_flg_ = True
             position_list(_position_nm_, position_flg_)
         except TypeError:
-            print('From Analize... print position list:')
-            traceback.print_exc()
-            # web_driver_.quit()
+            print(
+                '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+                'From [ analyzeTableContent.py ] :\n'
+                'Print position list: .\n'
+                + str(traceback.print_exc()) + ' .\n\n'
+                '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
         web_driver_.quit()
 
 # Here runs a garbage collector

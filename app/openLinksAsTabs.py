@@ -24,14 +24,21 @@ except ImportError:
     time.sleep(1)
     web_driver_ = _default_wbd_
     if wbd_count_ == 10:
-        print('Failed on [getSalaryInfo] \n^^^^^^^^^^^^^^^^^^^^^^^^')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ openLinksAsTabs.py ] :\n'
+            'Failed on [ getSalaryInfo ].\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
         web_driver_.quit()
         SystemExit(0)
 
 
 def open_link(links_count_, current_link_, open_link_count_=0, self=None):
-    print('{{{{{{{{{{{{{  openLinksAsTabs/open_link function begins  }}}}}}}}}}}}}')
-
+    print(
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+        'From [ openLinksAsTabs.py ] :\n'
+        'Now [ open_link ] function begins.\n\n'
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
     open_link_count_ += 1
 
     try:
@@ -46,18 +53,12 @@ def open_link(links_count_, current_link_, open_link_count_=0, self=None):
 
     analyze_instn_ = AnalyzeTblCont()
 
-    # current_dir_ = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-    # parent_dir_ = os.path.dirname(current_dir_)
-    # sys.path.insert(0,parent_dir_)
-    #
-    # import openBrowser
-
     global find_elem_cnt_, find_link_, msg_ln_
-
-    print("\n\n\nopen_link func: tab counter = " + str(links_count_) + "\n***************")
-    #    print(str(links_count_) + ": " + current_link_)
-    #    web_driver_.find_element_by_tag_name('html').send_keys(Keys.COMMAND + "t")
-
+    print(
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+        'From [ openLinksAsTabs.py ] :\n'
+        '[ open_link ] function: tab counter = ' + str(links_count_) + '.\n\n'
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
     try:
         web_driver_.execute_script('''window.open("https://www.techjob.co.il/salary-survey", "_blank");''')
         time.sleep(0.5)
@@ -69,9 +70,12 @@ def open_link(links_count_, current_link_, open_link_count_=0, self=None):
         time.sleep(1)
     except (WebDriverException, urllib3.exceptions.MaxRetryError):
 
-        print('From OpenLinksAsTabs: Cannot open the tab nmb ' + str(links_count_) + '. Browser is not reachable. Max '
-                                                                                     'retries to connect are '
-                                                                                     'exceeded.')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ openLinksAsTabs.py ] :\n'
+            'Cannot open the tab nmb ' + str(links_count_) + '.\n\n '
+            'Browser is not reachable. Max retries to connect are exceeded.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
         traceback.print_exc()
         time.sleep(2)
         web_driver_.quit()
@@ -99,10 +103,15 @@ def open_link(links_count_, current_link_, open_link_count_=0, self=None):
             # if __name__ == '__main__':
             analyze_instn_.analyze_tbl_cont(links_count_)
             time.sleep(0.25)
-            msg_ln_ = f"%%%%%%%%%%%% WebDriverWait, {str(find_elem_cnt_)} attempt %%%%%%%%%%%%%"
+            msg_ln_ = f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n' \
+                      f'From WebDriverWait: {str(find_elem_cnt_)} attempt to find element.' \
+                      f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
             print(msg_ln_)
             if find_elem_cnt_ > 3:
-                raise Exception("from getSalaryInfo: cannot find or close this pop-up")
+                raise Exception(
+            f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n' 
+            f'From getSalaryInfo: cannot find or close this pop-up.\n\n'
+            f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
     except NoSuchElementException:
         print('Link [' + current_link_ + '] was not found')
         # web_driver_.quit()
@@ -116,19 +125,23 @@ def kill_register_wn():  # Closes a registration pop-up
                   message="%%%%%%%%%%%% WebDriverWait %%%%%%%%%%%%%")
         pop_w_cls_.click()
     except TimeoutException:
-        print('Register window was not found')
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+            'From [ openLinksAsTabs.py ] :\n'
+            'Register window was not found.\n\n'
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
         pass
 
 
-def kill_wn():
-    the_request_ = requests.get(web_driver_.current_url)
-    try:
-        if the_request_.status_code == 200:
-            web_driver_.switch_to_window(web_driver_.window_handles[0])
-            import waitPopUpBox
-            waitPopUpBox.cvs_wn_.after_cancel(id)
-            waitPopUpBox.msg_root_2_.destroy()
-            return
-    except Exception:
-        time.sleep(0.5)
-        kill_wn()
+# def kill_wn():
+#     the_request_ = requests.get(web_driver_.current_url)
+#     try:
+#         if the_request_.status_code == 200:
+#             web_driver_.switch_to_window(web_driver_.window_handles[0])
+#             import waitPopUpBox
+#             waitPopUpBox.cvs_wn_.after_cancel(id)
+#             waitPopUpBox.msg_root_2_.destroy()
+#             return
+#     except Exception:
+#         time.sleep(0.5)
+#         kill_wn()

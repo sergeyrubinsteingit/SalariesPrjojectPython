@@ -7,8 +7,13 @@ browser_names_: list = []
 
 
 def run_batch_browsers_list():
-    print('>>>>>   browsers_list.bat  >>>>>>> '
-          + os.path.abspath("../SalariesPrjPython/ListBrowsers/browsers_list.bat").replace('/', os.path.sep))
+    print(
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'
+        'From [ list_browsers_onmachine.py ] :\n'
+        'Listing browsers on machine. Now [ browsers_list.bat ] is running\n'
+        'in ' + str(os.path.abspath("../SalariesPrjPython/ListBrowsers/browsers_list.bat").replace('/', os.path.sep))
+        + '\n\n'
+        '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')
     from app.combo_Box import call_combo_box
     list_browsers_ = subprocess.check_output(os.path.abspath("../SalariesPrjPython/ListBrowsers/browsers_list.bat").replace('/', os.path.sep))
     # creates and overwrites the browsers_py_.txt:
@@ -25,7 +30,6 @@ def run_batch_browsers_list():
             if brw_name_ == "ie":
                 brw_name_ = "explorer"
             browser_names_.append(str(brw_name_).capitalize())
-    print(str("browser_names_" + str(browser_names_)))
     brws_listfile_.close()
 
     # runs combobox
